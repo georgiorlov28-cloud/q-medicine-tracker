@@ -3,96 +3,122 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#101820">
+<meta name="theme-color" content="#f6f8f5">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Мои лекарства">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Мой приём">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>Мои лекарства</title>
+<title>Мой приём</title>
 <style>
-:root{color-scheme:dark;--bg:#0d141b;--panel:#17222d;--line:#2b3947;--text:#edf4f7;--muted:#9aabba;--green:#8ed8b5;--red:#ff9c9c}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#172a31 0,#0d141b 42%);color:var(--text);font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
-main{max-width:650px;margin:auto;padding:28px 17px calc(35px + env(safe-area-inset-bottom))}
-.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:700}
-h1{font-size:30px;margin:7px 0 4px} .sub{color:var(--muted);margin:0 0 23px}
-.card{background:rgba(23,34,45,.95);border:1px solid var(--line);border-radius:19px;padding:17px;margin:13px 0;box-shadow:0 12px 35px #0002}
-label{display:block;font-size:13px;color:var(--muted);margin:0 0 7px}
-input,button{font:inherit}input{width:100%;background:#0e171f;border:1px solid var(--line);border-radius:12px;padding:13px;color:var(--text);min-height:47px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:12px;padding:13px 15px;font-weight:700;cursor:pointer;min-height:47px}
-.primary{background:var(--green);color:#10221b}.secondary{background:#263746;color:var(--text);border:1px solid #3a4c5b}
-.actions{display:flex;gap:9px;margin-top:13px}.actions button{flex:1}
-.datebar{display:flex;align-items:center;justify-content:space-between;gap:10px}.datebar input{max-width:190px}
-.daytitle{font-size:18px;font-weight:700;margin:0 0 3px}.muted{color:var(--muted);font-size:13px}
-.entry{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.entry:last-child{border-bottom:0;padding-bottom:0}
-.entry strong{display:block}.time{color:var(--green);font-variant-numeric:tabular-nums;font-weight:700}
-.delete{background:transparent;color:var(--red);border:0;padding:8px;font-size:20px}
-.empty{color:var(--muted);padding:17px 0;text-align:center}
-.foot{font-size:12px;color:var(--muted);line-height:1.5;margin:18px 3px}
-@media(max-width:420px){h1{font-size:27px}.row{grid-template-columns:1fr}.datebar{align-items:flex-start;flex-direction:column}.datebar input{max-width:none}}
+:root{color-scheme:light;--bg:#f5f7f4;--paper:#fff;--ink:#20302b;--muted:#7d8b84;--line:#e5ebe6;--green:#267451;--green-bg:#e7f4ec;--gold:#a97828;--gold-bg:#fbf3e4;--shadow:0 8px 28px rgba(35,60,46,.055)}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit}button{cursor:pointer}.app{max-width:570px;margin:auto;padding:22px 17px calc(30px + env(safe-area-inset-bottom))}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.brand{display:flex;align-items:center;gap:11px}.logo{width:40px;height:40px;border-radius:13px;background:#e2f1e7;color:var(--green);display:grid;place-items:center;font-size:23px;font-weight:800}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.13em;text-transform:uppercase}.brand b{font-size:16px}.date-chip{font-size:12px;color:var(--green);background:var(--green-bg);padding:8px 11px;border-radius:30px;font-weight:650}
+h1{font-size:29px;line-height:1.13;letter-spacing:-.045em;margin:0 0 7px;font-weight:760}.intro{color:var(--muted);margin:0 0 20px;line-height:1.5;font-size:14px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:#edf1ed;border-radius:14px;padding:4px;margin-bottom:16px}.tab{border:0;border-radius:11px;background:transparent;color:var(--muted);padding:11px;font-weight:650}.tab.active{background:#fff;color:var(--green);box-shadow:0 2px 8px #203b2b12}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:19px;padding:17px;margin-bottom:14px;box-shadow:var(--shadow)}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}.panel-head h2{font-size:16px;margin:0;letter-spacing:-.02em}.muted{color:var(--muted);font-size:12px}
+.form-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:10px}.field label{display:block;color:var(--muted);font-size:11px;margin:0 0 6px 2px}
+.field input{width:100%;min-width:0;background:#fbfcfa;color:var(--ink);border:1px solid #dfe7e0;border-radius:11px;padding:12px 10px;min-height:45px;outline:none}
+.field input:focus{border-color:#70ad8d;box-shadow:0 0 0 3px #e6f3eb}
+.second-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:11px}
+.primary{width:100%;border:0;background:var(--green);color:#fff;border-radius:12px;padding:13px;font-weight:750;margin-top:13px;min-height:47px;box-shadow:0 4px 10px #26745120}.primary:active{transform:scale(.99)}
+.ghost{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:8px 11px}
+.entry{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.entry:last-child{border-bottom:0;padding-bottom:0}.entry strong{display:block;font-size:14px;font-weight:650}.entry small{color:var(--muted);font-size:12px}.entry-right{display:flex;align-items:center;gap:9px}.time{color:var(--green);font-variant-numeric:tabular-nums;font-weight:700}.del{border:0;background:transparent;color:#b56c6c;font-size:20px;padding:2px 5px}
+.empty{padding:18px 4px;color:var(--muted);font-size:13px;text-align:center;line-height:1.5}
+.month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.month-nav strong{font-size:16px;text-transform:capitalize}.arrows{display:flex;gap:7px}.arrows button{width:34px;height:34px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:19px}
+.week,.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.week div{text-align:center;color:var(--muted);font-size:10px;padding:5px 0 8px;font-weight:650}
+.day{position:relative;min-width:0;aspect-ratio:1;border:1px solid transparent;border-radius:11px;background:#f7f9f7;color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:3px}
+.day span{font-size:13px}.day i{width:5px;height:5px;border-radius:50%;background:transparent}.day.done{background:var(--green-bg);color:#1f6946}.day.done i{background:#2e9663}.day.selected{outline:2px solid var(--green);outline-offset:1px}.day.today span{font-weight:850;color:var(--gold)}.day.other{opacity:.28}.day.future{opacity:.58}
+.legend{display:flex;gap:15px;flex-wrap:wrap;color:var(--muted);font-size:11px;margin-top:13px}.legend span{display:flex;align-items:center;gap:6px}.dot{width:7px;height:7px;border-radius:50%;background:#2e9663}.dot.none{background:#cbd4cd}
+.selected-day{display:flex;justify-content:space-between;align-items:center;margin:2px 0 5px}.selected-day b{font-size:14px}.status{font-size:11px;color:var(--muted)}.status.done{color:var(--green);font-weight:650}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.stat{background:#fff;border:1px solid var(--line);border-radius:15px;padding:13px;box-shadow:var(--shadow)}.stat b{display:block;font-size:22px;color:var(--green);letter-spacing:-.04em}.stat small{color:var(--muted);font-size:11px}
+.tools{display:flex;gap:8px;flex-wrap:wrap}.tool-btn{border:1px solid var(--line);background:#fff;color:#40534a;border-radius:10px;padding:9px 11px;font-size:12px;font-weight:600}
+.note{color:var(--muted);font-size:11px;line-height:1.55;margin:16px 3px 0}.hidden{display:none!important}
+@media(max-width:380px){.app{padding-left:13px;padding-right:13px}.panel{padding:14px}.day{border-radius:9px}.day span{font-size:12px}.form-grid{grid-template-columns:1.2fr 1fr}}
 </style>
 </head>
 <body>
-<main>
-  <div class="kicker">Личный трекер</div>
-  <h1>Мои лекарства</h1>
-  <p class="sub">Отмечайте каждый приём и смотрите историю по дням.</p>
+<main class="app">
+<header class="top"><div class="brand"><div class="logo">✓</div><div><small>личный трекер</small><b>Мой приём</b></div></div><div class="date-chip" id="dateChip">Сегодня</div></header>
+<h1>Мои отметки</h1>
+<p class="intro">Просто записывай каждый приём. Календарь покажет дни, в которые ты добавлял записи.</p>
+<nav class="tabs"><button class="tab active" id="tabLog">＋ Журнал</button><button class="tab" id="tabCalendar">▦ Календарь</button></nav>
 
-  <section class="card">
-    <div class="row">
-      <div><label for="medicine">Название лекарства</label><input id="medicine" maxlength="80" placeholder="Например, препарат"></div>
-      <div><label for="dose">Дозировка (необязательно)</label><input id="dose" maxlength="40" placeholder="Например, 1 таблетка"></div>
-    </div>
-    <div class="row" style="margin-top:12px">
-      <div><label for="takenDate">Дата</label><input id="takenDate" type="date"></div>
-      <div><label for="takenTime">Время</label><input id="takenTime" type="time"></div>
-    </div>
-    <div class="actions">
-      <button class="btn primary" id="add">Отметить приём</button>
-      <button class="btn secondary" id="now">Сейчас</button>
-    </div>
-  </section>
+<section id="logView">
+ <div class="panel">
+  <div class="panel-head"><h2>Добавить отметку</h2><span class="muted">ручной ввод</span></div>
+  <div class="form-grid">
+   <div class="field"><label for="medicine">Название лекарства</label><input id="medicine" maxlength="80" placeholder="Например, препарат"></div>
+   <div class="field"><label for="dose">Дозировка</label><input id="dose" maxlength="40" placeholder="1 таблетка"></div>
+  </div>
+  <div class="second-row">
+   <div class="field"><label for="takenDate">Дата приёма</label><input id="takenDate" type="date"></div>
+   <div class="field"><label for="takenTime">Время приёма</label><input id="takenTime" type="time"></div>
+  </div>
+  <button class="primary" id="add">Сохранить отметку</button>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><h2>История за день</h2><input id="filterDate" type="date" aria-label="Выбрать дату" style="max-width:145px;background:#fbfcfa;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px"></div>
+  <div id="dailyEntries"></div>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><h2>Мои данные</h2><span class="muted">резервная копия</span></div>
+  <div class="tools"><button class="tool-btn" id="exportBtn">Скачать копию</button><button class="tool-btn" id="importBtn">Восстановить копию</button><input id="importFile" type="file" accept="application/json,.json" class="hidden"></div>
+ </div>
+</section>
 
-  <section class="card">
-    <div class="datebar">
-      <div><p class="daytitle">История приёма</p><div class="muted" id="count">0 отметок за день</div></div>
-      <input id="filterDate" type="date" aria-label="Выбрать день">
-    </div>
-    <div id="entries"></div>
-  </section>
-  <p class="foot">Данные сохраняются на этом устройстве в браузере. При очистке данных Safari они могут удалиться. Это журнал отметок, а не медицинское напоминание: сверяйте дозировку и расписание с назначением врача.</p>
+<section id="calendarView" class="hidden">
+ <div class="panel">
+  <div class="month-nav"><button class="ghost" id="prevMonth" aria-label="Предыдущий месяц">‹</button><strong id="monthLabel"></strong><button class="ghost" id="nextMonth" aria-label="Следующий месяц">›</button></div>
+  <div class="week"><div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>ВС</div></div>
+  <div class="calendar" id="calendar"></div>
+  <div class="legend"><span><i class="dot"></i> Есть отметка</span><span><i class="dot none"></i> Нет записей</span></div>
+ </div>
+ <div class="stats"><div class="stat"><b id="monthDays">0</b><small>дней с отметками в месяце</small></div><div class="stat"><b id="monthEntries">0</b><small>записей за месяц</small></div></div>
+ <div class="panel"><div class="selected-day"><b id="chosenDateLabel">Выбранный день</b><span class="status" id="chosenStatus"></span></div><div id="calendarEntries"></div></div>
+</section>
+<p class="note">Записи сохраняются в браузере на этом устройстве. Кнопка «Скачать копию» создаёт резервный JSON-файл, который можно восстановить позже. Не очищай данные Safari без резервной копии. Календарь показывает только наличие ручных отметок и не определяет пропущенные дозы или правильность лечения.</p>
 </main>
 <script>
-const $=id=>document.getElementById(id);
-const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
-const nowTime=()=>{const d=new Date();return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};
-let records=[];try{records=JSON.parse(localStorage.getItem('medicine-log-v1')||'[]')}catch(e){}
-$('takenDate').value=today();$('filterDate').value=today();$('takenTime').value=nowTime();
-function save(){localStorage.setItem('medicine-log-v1',JSON.stringify(records));render()}
-function render(){
- const date=$('filterDate').value;const list=records.filter(x=>x.date===date).sort((a,b)=>b.time.localeCompare(a.time));
- $('count').textContent=`${list.length} ${list.length===1?'отметка':list.length<5?'отметки':'отметок'} за день`;
- const host=$('entries');host.innerHTML='';
- if(!list.length){host.innerHTML='<div class="empty">За этот день отметок пока нет.</div>';return}
- list.forEach(x=>{const div=document.createElement('div');div.className='entry';
- const left=document.createElement('div');const name=document.createElement('strong');name.textContent=x.name;
- const dose=document.createElement('span');dose.className='muted';dose.textContent=x.dose||'Дозировка не указана';left.append(name,dose);
- const right=document.createElement('div');right.style.display='flex';right.style.alignItems='center';
- const time=document.createElement('span');time.className='time';time.textContent=x.time;
- const del=document.createElement('button');del.className='delete';del.setAttribute('aria-label','Удалить отметку');del.textContent='×';del.onclick=()=>{records=records.filter(r=>r.id!==x.id);save()};
- right.append(time,del);div.append(left,right);host.append(div)});
+const $=id=>document.getElementById(id),pad=n=>String(n).padStart(2,'0');
+const localDate=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,today=()=>localDate(new Date());
+const nowTime=()=>{const d=new Date();return `${pad(d.getHours())}:${pad(d.getMinutes())}`};
+let records=[];try{records=JSON.parse(localStorage.getItem('medicine-log-v1')||'[]');if(!Array.isArray(records))records=[]}catch(e){records=[]}
+let selected=today(),viewMonth=new Date();viewMonth.setDate(1);
+$('takenDate').value=today();$('takenTime').value=nowTime();$('filterDate').value=today();
+$('dateChip').textContent=new Date().toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
+function persist(){localStorage.setItem('medicine-log-v1',JSON.stringify(records));renderAll()}
+function addEntry(target,x){
+ const row=document.createElement('div');row.className='entry';const left=document.createElement('div'),name=document.createElement('strong'),dose=document.createElement('small');
+ name.textContent=x.name;dose.textContent=x.dose||'Дозировка не указана';left.append(name,dose);
+ const right=document.createElement('div');right.className='entry-right';const time=document.createElement('span');time.className='time';time.textContent=x.time;
+ const del=document.createElement('button');del.className='del';del.textContent='×';del.setAttribute('aria-label','Удалить отметку');del.onclick=()=>{if(confirm('Удалить эту отметку?')){records=records.filter(r=>r.id!==x.id);persist()}};
+ right.append(time,del);row.append(left,right);target.append(row);
 }
-$('add').onclick=()=>{
- const name=$('medicine').value.trim(),date=$('takenDate').value,time=$('takenTime').value;
- if(!name){$('medicine').focus();$('medicine').placeholder='Сначала укажите название';return}
- if(!date||!time)return;
- records.push({id:Date.now()+Math.random(),name,dose:$('dose').value.trim(),date,time});
- $('filterDate').value=date;save();
-};
-$('now').onclick=()=>{$('takenDate').value=today();$('takenTime').value=nowTime()};
-$('filterDate').addEventListener('change',render);
-render();
-if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+function renderDaily(){const date=$('filterDate').value,list=records.filter(x=>x.date===date).sort((a,b)=>b.time.localeCompare(a.time)),host=$('dailyEntries');host.innerHTML='';if(!list.length){host.innerHTML='<div class="empty">На эту дату пока нет отметок.</div>';return}list.forEach(x=>addEntry(host,x))}
+function renderCalendar(){
+ const y=viewMonth.getFullYear(),m=viewMonth.getMonth();$('monthLabel').textContent=new Date(y,m,1).toLocaleDateString('ru-RU',{month:'long',year:'numeric'});
+ const first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate(),prevDays=new Date(y,m,0).getDate(),host=$('calendar');host.innerHTML='';
+ const todayStr=today(),prefix=`${y}-${pad(m+1)}-`,monthRecords=records.filter(x=>x.date.startsWith(prefix)),doneDates=new Set(records.map(x=>x.date));let doneCount=0;
+ for(let i=0;i<42;i++){let n=i-first+1,dt,other=false;if(n<1){dt=new Date(y,m-1,prevDays+n);other=true}else if(n>days){dt=new Date(y,m+1,n-days);other=true}else dt=new Date(y,m,n);
+ const key=localDate(dt),done=doneDates.has(key),isToday=key===todayStr;if(!other&&done)doneCount++;
+ const b=document.createElement('button');b.className='day'+(other?' other':'')+(done?' done':'')+(key===selected?' selected':'')+(isToday?' today':'')+(key>todayStr?' future':'');
+ const num=document.createElement('span');num.textContent=dt.getDate();const dot=document.createElement('i');b.append(num,dot);
+ b.onclick=()=>{selected=key;$('filterDate').value=key;$('takenDate').value=key;renderCalendar();renderSelected();renderDaily()};host.append(b)}
+ $('monthDays').textContent=doneCount;$('monthEntries').textContent=monthRecords.length;
+}
+function renderSelected(){const d=new Date(selected+'T12:00:00');$('chosenDateLabel').textContent=d.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});const list=records.filter(x=>x.date===selected).sort((a,b)=>a.time.localeCompare(b.time)),host=$('calendarEntries');host.innerHTML='';$('chosenStatus').textContent=list.length?'Есть отметки':'Нет записей';$('chosenStatus').className='status'+(list.length?' done':'');if(!list.length){host.innerHTML='<div class="empty">В этот день отметок нет.</div>';return}list.forEach(x=>addEntry(host,x))}
+function renderAll(){renderDaily();renderCalendar();renderSelected()}
+$('add').onclick=()=>{const name=$('medicine').value.trim(),date=$('takenDate').value,time=$('takenTime').value;if(!name){$('medicine').focus();return}if(!date||!time)return;records.push({id:Date.now()+Math.random(),name,dose:$('dose').value.trim(),date,time});selected=date;$('filterDate').value=date;viewMonth=new Date(date+'T12:00:00');viewMonth.setDate(1);renderAll();$('medicine').value='';$('dose').value=''};
+$('filterDate').onchange=()=>{selected=$('filterDate').value;$('takenDate').value=selected;viewMonth=new Date(selected+'T12:00:00');viewMonth.setDate(1);renderAll()};
+$('prevMonth').onclick=()=>{viewMonth.setMonth(viewMonth.getMonth()-1);renderCalendar()};$('nextMonth').onclick=()=>{viewMonth.setMonth(viewMonth.getMonth()+1);renderCalendar()};
+function switchTab(which){const cal=which==='calendar';$('logView').classList.toggle('hidden',cal);$('calendarView').classList.toggle('hidden',!cal);$('tabLog').classList.toggle('active',!cal);$('tabCalendar').classList.toggle('active',cal);if(cal){renderCalendar();renderSelected()}}
+$('tabLog').onclick=()=>switchTab('log');$('tabCalendar').onclick=()=>switchTab('calendar');
+$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify({format:'medicine-log-backup',version:1,exportedAt:new Date().toISOString(),records},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`medicine-log-${today()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text()),incoming=Array.isArray(data)?data:data.records;if(!Array.isArray(incoming)||!incoming.every(x=>x&&typeof x.name==='string'&&typeof x.date==='string'&&typeof x.time==='string'))throw Error('bad');if(!confirm('Добавить записи из копии к текущей истории?'))return;const ids=new Set(records.map(x=>String(x.id)));incoming.forEach(x=>{if(!ids.has(String(x.id)))records.push({...x,id:x.id??Date.now()+Math.random()})});persist();alert('Копия восстановлена.')}catch(err){alert('Не удалось прочитать файл резервной копии.')}finally{e.target.value=''}};
+renderAll();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
-</body>
-</html>
+</body></html>
