@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101820">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Мои лекарства">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Мои лекарства</title>
+<style>
+:root{color-scheme:dark;--bg:#0d141b;--panel:#17222d;--line:#2b3947;--text:#edf4f7;--muted:#9aabba;--green:#8ed8b5;--red:#ff9c9c}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#172a31 0,#0d141b 42%);color:var(--text);font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+main{max-width:650px;margin:auto;padding:28px 17px calc(35px + env(safe-area-inset-bottom))}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:700}
+h1{font-size:30px;margin:7px 0 4px} .sub{color:var(--muted);margin:0 0 23px}
+.card{background:rgba(23,34,45,.95);border:1px solid var(--line);border-radius:19px;padding:17px;margin:13px 0;box-shadow:0 12px 35px #0002}
+label{display:block;font-size:13px;color:var(--muted);margin:0 0 7px}
+input,button{font:inherit}input{width:100%;background:#0e171f;border:1px solid var(--line);border-radius:12px;padding:13px;color:var(--text);min-height:47px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:12px;padding:13px 15px;font-weight:700;cursor:pointer;min-height:47px}
+.primary{background:var(--green);color:#10221b}.secondary{background:#263746;color:var(--text);border:1px solid #3a4c5b}
+.actions{display:flex;gap:9px;margin-top:13px}.actions button{flex:1}
+.datebar{display:flex;align-items:center;justify-content:space-between;gap:10px}.datebar input{max-width:190px}
+.daytitle{font-size:18px;font-weight:700;margin:0 0 3px}.muted{color:var(--muted);font-size:13px}
+.entry{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.entry:last-child{border-bottom:0;padding-bottom:0}
+.entry strong{display:block}.time{color:var(--green);font-variant-numeric:tabular-nums;font-weight:700}
+.delete{background:transparent;color:var(--red);border:0;padding:8px;font-size:20px}
+.empty{color:var(--muted);padding:17px 0;text-align:center}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;margin:18px 3px}
+@media(max-width:420px){h1{font-size:27px}.row{grid-template-columns:1fr}.datebar{align-items:flex-start;flex-direction:column}.datebar input{max-width:none}}
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">Личный трекер</div>
+  <h1>Мои лекарства</h1>
+  <p class="sub">Отмечайте каждый приём и смотрите историю по дням.</p>
+
+  <section class="card">
+    <div class="row">
+      <div><label for="medicine">Название лекарства</label><input id="medicine" maxlength="80" placeholder="Например, препарат"></div>
+      <div><label for="dose">Дозировка (необязательно)</label><input id="dose" maxlength="40" placeholder="Например, 1 таблетка"></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div><label for="takenDate">Дата</label><input id="takenDate" type="date"></div>
+      <div><label for="takenTime">Время</label><input id="takenTime" type="time"></div>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="add">Отметить приём</button>
+      <button class="btn secondary" id="now">Сейчас</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="datebar">
+      <div><p class="daytitle">История приёма</p><div class="muted" id="count">0 отметок за день</div></div>
+      <input id="filterDate" type="date" aria-label="Выбрать день">
+    </div>
+    <div id="entries"></div>
+  </section>
+  <p class="foot">Данные сохраняются на этом устройстве в браузере. При очистке данных Safari они могут удалиться. Это журнал отметок, а не медицинское напоминание: сверяйте дозировку и расписание с назначением врача.</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const nowTime=()=>{const d=new Date();return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};
+let records=[];try{records=JSON.parse(localStorage.getItem('medicine-log-v1')||'[]')}catch(e){}
+$('takenDate').value=today();$('filterDate').value=today();$('takenTime').value=nowTime();
+function save(){localStorage.setItem('medicine-log-v1',JSON.stringify(records));render()}
+function render(){
+ const date=$('filterDate').value;const list=records.filter(x=>x.date===date).sort((a,b)=>b.time.localeCompare(a.time));
+ $('count').textContent=`${list.length} ${list.length===1?'отметка':list.length<5?'отметки':'отметок'} за день`;
+ const host=$('entries');host.innerHTML='';
+ if(!list.length){host.innerHTML='<div class="empty">За этот день отметок пока нет.</div>';return}
+ list.forEach(x=>{const div=document.createElement('div');div.className='entry';
+ const left=document.createElement('div');const name=document.createElement('strong');name.textContent=x.name;
+ const dose=document.createElement('span');dose.className='muted';dose.textContent=x.dose||'Дозировка не указана';left.append(name,dose);
+ const right=document.createElement('div');right.style.display='flex';right.style.alignItems='center';
+ const time=document.createElement('span');time.className='time';time.textContent=x.time;
+ const del=document.createElement('button');del.className='delete';del.setAttribute('aria-label','Удалить отметку');del.textContent='×';del.onclick=()=>{records=records.filter(r=>r.id!==x.id);save()};
+ right.append(time,del);div.append(left,right);host.append(div)});
+}
+$('add').onclick=()=>{
+ const name=$('medicine').value.trim(),date=$('takenDate').value,time=$('takenTime').value;
+ if(!name){$('medicine').focus();$('medicine').placeholder='Сначала укажите название';return}
+ if(!date||!time)return;
+ records.push({id:Date.now()+Math.random(),name,dose:$('dose').value.trim(),date,time});
+ $('filterDate').value=date;save();
+};
+$('now').onclick=()=>{$('takenDate').value=today();$('takenTime').value=nowTime()};
+$('filterDate').addEventListener('change',render);
+render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body>
+</html>
